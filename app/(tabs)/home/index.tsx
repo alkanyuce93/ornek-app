@@ -14,11 +14,14 @@ import { ProductApi } from "@/services/api";
 import { useTranslation } from "react-i18next";
 import { SearchBar } from "@/components/common/searchBar";
 import { ProductCard } from "@/components/product";
+import Colors from "@/constants/Colors";
+import { useShadow } from "@/context/shadowContext";
 
 const { height } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const { t } = useTranslation();
+  const { shadowStyle } = useShadow();
 
   const { data: categories, isLoading: loadingCategories } =
     CategoryApi.useGetCategoriesQuery();
@@ -67,7 +70,7 @@ export default function HomeScreen() {
             renderItem={({ item }) => (
               <TouchableOpacity
                 key={item}
-                style={styles.categoryItem}
+                style={[shadowStyle, styles.categoryItem]}
                 onPress={() => handleCategoryPress(item)}
               >
                 <Text style={styles.categoryItemText}>{t(item)}</Text>
@@ -80,6 +83,8 @@ export default function HomeScreen() {
 
       <Text style={[styles.title]}>{t("products")}</Text>
       <FlatList
+        contentContainerStyle={{ paddingBottom: 50 }}
+        style={{ borderWidth: 1, borderColor: Colors.light.tint }}
         keyExtractor={(item, index) => index.toString()}
         showsHorizontalScrollIndicator={false}
         numColumns={2}
@@ -109,15 +114,17 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "600",
+    color: Colors.light.textTitle,
   },
   contentTitle: {
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 10,
+    color: Colors.light.textTitle,
   },
   categoryItem: {
-    backgroundColor: "#999A9B",
+    backgroundColor: Colors.light.tint,
     height: 40,
     marginHorizontal: 5,
     borderRadius: 30,

@@ -8,9 +8,11 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import { SearchApi } from "@/services/api/search";
 import { useTranslation } from "react-i18next";
 import { Product } from "@/interfaces";
+import Colors from "@/constants/Colors";
 
 interface SearchBarProps {
   onItemSelected: (selectedItem: Product) => void;
@@ -50,14 +52,28 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onItemSelected }) => {
     };
   }, [searchQuery]);
 
+  const clearSearchQuery = () => {
+    setSearchQuery("");
+  };
+
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.textInput}
-        placeholder={t("search")}
-        value={searchQuery}
-        onChangeText={(text) => setSearchQuery(text)}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput}
+          placeholder={t("search")}
+          value={searchQuery}
+          onChangeText={(text) => setSearchQuery(text)}
+        />
+        {searchQuery.length > 0 && (
+          <TouchableOpacity
+            onPress={clearSearchQuery}
+            style={styles.clearButton}
+          >
+            <FontAwesome name="times-circle" size={20} color="gray" />
+          </TouchableOpacity>
+        )}
+      </View>
       {isLoading && <Text>{t("loading")}</Text>}
       {data && data.products.length > 0 && searchQuery.length > 0 ? (
         <FlatList
@@ -96,13 +112,24 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "100%",
   },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   textInput: {
+    flex: 1,
     height: 40,
-    borderColor: "#ccc",
+    borderColor: Colors.light.textTitle,
     borderWidth: 1,
     borderRadius: 8,
     padding: 8,
     marginBottom: 10,
+  },
+  clearButton: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+    bottom: 10,
   },
   itemContainer: {
     flexDirection: "row",
