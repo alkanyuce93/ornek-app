@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     color: Colors.light.textTitle,
+    marginTop: 20,
   },
   categoryItem: {
     backgroundColor: Colors.light.tint,

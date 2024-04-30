@@ -77,8 +77,13 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onItemSelected }) => {
       {isLoading && <Text>{t("loading")}</Text>}
       {data && data.products.length > 0 && searchQuery.length > 0 ? (
         <FlatList
+          style={{ width: "100%" }}
           key={data.products.length.toString()}
           data={data.products}
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: 100,
+          }}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
