@@ -18,6 +18,7 @@ import { FavProvider } from "@/context/favContext";
 import { ProductProvider } from "@/context/productContext";
 
 import i18n from "@/i18";
+import { ShadowProvider } from "@/context/shadowContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -62,30 +63,32 @@ function RootLayoutNav() {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
-        <GestureHandlerRootView>
-          <I18nextProvider i18n={i18n}>
-            <ProductProvider>
-              <FavProvider>
-                <CategoryProvider>
-                  <ThemeProvider
-                    value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-                  >
-                    <Stack>
-                      <Stack.Screen
-                        name="loginScreen"
-                        options={{ headerShown: false }}
-                      />
-                      <Stack.Screen
-                        name="(tabs)"
-                        options={{ headerShown: false }}
-                      />
-                    </Stack>
-                  </ThemeProvider>
-                </CategoryProvider>
-              </FavProvider>
-            </ProductProvider>
-          </I18nextProvider>
-        </GestureHandlerRootView>
+        <ShadowProvider>
+          <GestureHandlerRootView>
+            <I18nextProvider i18n={i18n}>
+              <ProductProvider>
+                <FavProvider>
+                  <CategoryProvider>
+                    <ThemeProvider
+                      value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+                    >
+                      <Stack>
+                        <Stack.Screen
+                          name="loginScreen"
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="(tabs)"
+                          options={{ headerShown: false }}
+                        />
+                      </Stack>
+                    </ThemeProvider>
+                  </CategoryProvider>
+                </FavProvider>
+              </ProductProvider>
+            </I18nextProvider>
+          </GestureHandlerRootView>
+        </ShadowProvider>
       </SessionProvider>
     </QueryClientProvider>
   );

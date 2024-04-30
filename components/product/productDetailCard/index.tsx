@@ -13,6 +13,7 @@ import { InnerHeader } from "@/components/common";
 import { Product } from "@/interfaces";
 import { useFav } from "@/context/favContext";
 import { useTranslation } from "react-i18next";
+import Colors from "@/constants/Colors";
 
 const { height, width } = Dimensions.get("window");
 
@@ -36,7 +37,11 @@ export const ProductDetailCard: React.FC<ProductDetailCardProps> = ({
         data={product.images}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <Image key={item} style={styles.thumbnail} source={{ uri: item }} />
+          <Image
+            key={item as string}
+            style={styles.thumbnail}
+            source={{ uri: item as string }}
+          />
         )}
       />
 
@@ -88,8 +93,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: height * 0.06,
     borderWidth: 1,
+    borderColor: Colors.light.textTitle,
     marginRight: 8,
     resizeMode: "contain",
+    marginBottom: 16,
   },
   title: {
     fontSize: 20,

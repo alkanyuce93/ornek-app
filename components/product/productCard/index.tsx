@@ -5,6 +5,7 @@ import { Product } from "@/interfaces";
 import { useFav } from "@/context/favContext";
 import { FontAwesome } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import { useShadow } from "@/context/shadowContext";
 
 const { width } = Dimensions.get("window");
 
@@ -14,6 +15,7 @@ interface ProductProps {
 }
 
 export const ProductCard: React.FC<ProductProps> = ({ product, onPress }) => {
+  const { shadowStyle } = useShadow();
   const { t } = useTranslation();
 
   const { addToFav, removeFromFav, isFav } = useFav();
@@ -31,7 +33,7 @@ export const ProductCard: React.FC<ProductProps> = ({ product, onPress }) => {
   };
 
   return (
-    <TouchableOpacity onPress={handlePress}>
+    <TouchableOpacity style={shadowStyle} onPress={handlePress}>
       <View style={styles.container}>
         <Image style={styles.image} source={{ uri: product.thumbnail }} />
         <Text style={styles.title} numberOfLines={2}>
