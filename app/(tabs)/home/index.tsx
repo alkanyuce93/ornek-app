@@ -32,11 +32,11 @@ export default function HomeScreen() {
   const handleCategoryPress = (categoryName: string) => {
     setSelectedCategory(categoryName);
 
-    router.push("/(tabs)/home/categories");
+    router.navigate("/(tabs)/home/categories");
   };
 
   const handleProductPress = (productId: number) => {
-    router.push(`/home/detail/${productId}`);
+    router.navigate(`/home/detail/${productId}`);
   };
 
   return (

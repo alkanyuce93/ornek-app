@@ -33,7 +33,7 @@ export default function SettingsScreen() {
   };
 
   const handlePress = () => {
-    router.push("/settings/change-language");
+    router.navigate("/(tabs)/settings/change-language");
   };
 
   return (
