@@ -32,7 +32,7 @@ const LoginScreen: React.FC = () => {
         password,
       };
       const result = await loginMutation.mutateAsync(data).catch((error) => {
-        alert(error?.response?.data?.message || "An error occurred.");
+        alert(t("controlUserNameAndPassword"));
       });
 
       if (result) {

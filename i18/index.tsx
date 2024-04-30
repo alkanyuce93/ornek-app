@@ -55,6 +55,8 @@ i18n.use(initReactI18next).init({
         cancel: "Cancel",
         confirm: "Confirm",
         noFavProducts: "You have no favorite products.",
+        controlUserNameAndPassword:
+          "Please control your username and password.",
       },
     },
     tr: {
@@ -108,12 +110,14 @@ i18n.use(initReactI18next).init({
         cancel: "İptal",
         confirm: "Onayla",
         noFavProducts: "Favori ürününüz bulunmamaktadır.",
+        controlUserNameAndPassword:
+          "Lütfen kullanıcı adı ve şifrenizi kontrol ediniz.",
       },
     },
   },
 
-  lng: "en",
-  fallbackLng: "en",
+  lng: "tr",
+  fallbackLng: "tr",
   interpolation: {
     escapeValue: false,
   },
