@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -6,9 +6,9 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { InnerHeader } from "@/components/common";
 import { Product } from "@/interfaces";
 import { useFav } from "@/context/favContext";
@@ -25,25 +25,99 @@ export const ProductDetailCard: React.FC<ProductDetailCardProps> = ({
   product,
 }) => {
   const { t } = useTranslation();
+  const flatListRef = useRef<FlatList>(null);
+
+  const scrollLeft = () => {
+    flatListRef.current?.scrollToIndex({
+      animated: true,
+      index: Math.max(0, currentIndex - 1),
+    });
+  };
+
+  const scrollRight = () => {
+    flatListRef.current?.scrollToIndex({
+      animated: true,
+      index: Math.min(product.images.length - 1, currentIndex + 1),
+    });
+  };
 
   const { addToFav, removeFromFav, isFav } = useFav();
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const renderImageIndicators = () => {
+    return product.images.map((_, index) => (
+      <TouchableOpacity
+        key={index}
+        onPress={() => {
+          flatListRef.current?.scrollToIndex({
+            animated: true,
+            index: index,
+          });
+        }}
+      >
+        <View
+          style={[
+            styles.imageIndicator,
+            {
+              backgroundColor:
+                currentIndex === index
+                  ? "rgba(0, 0, 0, 0.5)"
+                  : "rgba(0, 0, 0, 0.1)",
+            },
+          ]}
+        />
+      </TouchableOpacity>
+    ));
+  };
 
   return (
     <View style={styles.container}>
       <InnerHeader headerTitle={t("productDetail")} />
+
       <FlatList
-        key={product.images.length.toString()}
+        ref={flatListRef}
+        style={{ marginTop: 8 }}
+        keyExtractor={(item, index) => index.toString()}
         horizontal
         data={product.images}
-        keyExtractor={(item, index) => index.toString()}
+        onMomentumScrollEnd={(event) => {
+          const newIndex = Math.round(
+            event.nativeEvent.contentOffset.x / width
+          );
+          setCurrentIndex(newIndex);
+        }}
         renderItem={({ item }) => (
           <Image
             key={item as string}
-            style={styles.thumbnail}
+            style={{
+              width: width - 32,
+              height: 400,
+              borderRadius: 8,
+              marginRight: 8,
+              resizeMode: "cover",
+            }}
             source={{ uri: item as string }}
           />
         )}
       />
+      <View style={styles.imageIndicatorsContainer}>
+        {renderImageIndicators()}
+      </View>
+
+      <View
+        style={{
+          alignItems: "flex-end",
+          flexDirection: "row",
+          justifyContent: "flex-end",
+        }}
+      >
+        <TouchableOpacity onPress={scrollLeft}>
+          <AntDesign name="caretleft" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={scrollRight}>
+          <AntDesign name="caretright" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
 
       <Text style={styles.title}>
         {t("model")} {product.title}
@@ -87,16 +161,16 @@ const styles = StyleSheet.create({
     elevation: 2,
     paddingTop: height * 0.06,
   },
-  thumbnail: {
-    width: width * 0.6,
-    height: 400,
-    borderRadius: 8,
-    marginTop: height * 0.06,
-    borderWidth: 1,
-    borderColor: Colors.light.textTitle,
-    marginRight: 8,
-    resizeMode: "contain",
-    marginBottom: 16,
+  imageIndicatorsContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 8,
+  },
+  imageIndicator: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 4,
   },
   title: {
     fontSize: 20,
